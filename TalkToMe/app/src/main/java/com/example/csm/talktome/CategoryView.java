@@ -11,22 +11,22 @@ import android.widget.TextView;
  * Created by CSH on 2017-12-05.
  */
 
-public class ListItemView extends LinearLayout {
+public class CategoryView extends LinearLayout {
     TextView textTitle;
     TextView textContent;
     TextView textDate;
-    public ListItemView(Context context) {
+    public CategoryView(Context context) {
         super(context);
         init(context);
     }
 
-    public ListItemView(Context context, @Nullable AttributeSet attrs) {
+    public CategoryView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
     private void init(Context context){
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.list_item,this,true);
+        inflater.inflate(R.layout.category_item,this,true);
         textTitle =(TextView) findViewById(R.id.textTitle);
         textContent =(TextView) findViewById(R.id.textContent);
         textDate =(TextView) findViewById(R.id.textDate);

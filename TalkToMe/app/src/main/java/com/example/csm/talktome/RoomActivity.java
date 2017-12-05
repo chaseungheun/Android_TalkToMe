@@ -21,7 +21,7 @@ import java.util.Locale;
 public class RoomActivity extends AppCompatActivity {
     EditText con,ti;
     AlertDialog.Builder aDialog;
-    ListAdapter adapter;
+    CategoryAdapter adapter;
     View layout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,47 +31,24 @@ public class RoomActivity extends AppCompatActivity {
         aDialog = new AlertDialog.Builder(this);
         ListView listView = (ListView) findViewById(R.id.listView);
         Button addbtn = (Button) findViewById(R.id.button_add);
-        adapter = new ListAdapter();
+        adapter = new CategoryAdapter();
 
         addbtn.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view){
-                Context context = getApplicationContext();
-                LayoutInflater inflater = (LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
-                layout = inflater.inflate(R.layout.list_add,null);
-
-
-                aDialog.setTitle("새 메모 만들기");
-                aDialog.setView(layout);
-                aDialog.setPositiveButton("확인",new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog,int which){
-                        ti=(EditText)layout.findViewById(R.id.editTitle);
-                        con=(EditText)layout.findViewById(R.id.editContent);
-                        adapter.addItem(new ListItem(ti.getText().toString(),con.getText().toString(),getDateString()));
-                    }
-
-                });
-                aDialog.setNegativeButton("취소",new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog,int which){
-                    }
-                });
-                AlertDialog ad = aDialog.create();
-                ad.show();
+              dialogCreate();
             }
         });
 
         listView.setAdapter(adapter);
     }
-    class ListAdapter extends BaseAdapter {
-        ArrayList<ListItem> items= new ArrayList<ListItem>();
+    class CategoryAdapter extends BaseAdapter {
+        ArrayList<CategoryItem> items= new ArrayList<CategoryItem>();
         @Override
         public int getCount() {
             return items.size(); //리스트뷰 사이즈 반환
         }
-        public void addItem(ListItem item){
+        public void addItem(CategoryItem item){
             items.add(item);
         }
         @Override
@@ -86,11 +63,11 @@ public class RoomActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ListItemView view = new ListItemView(getApplicationContext());
-            ListItem item = items.get(position);
-            view.setTitle(item.getItemTitle());
-            view.setContent(item.getItemcontent());
-            view.setDate(item.getItemdate());
+            CategoryView view = new CategoryView(getApplicationContext());
+            CategoryItem item = items.get(position);
+            view.setTitle(item.getTitle());
+            view.setContent(item.getContent());
+            view.setDate(item.getDate());
             return view;
         }
     }
@@ -101,5 +78,28 @@ public class RoomActivity extends AppCompatActivity {
 
         return str_date;
     }
+    public void dialogCreate(){
+        Context context = getApplicationContext();
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.category_add,null);
+        aDialog.setTitle("새 메모 만들기");
+        aDialog.setView(layout);
+        aDialog.setPositiveButton("확인",new DialogInterface.OnClickListener() {
 
+            @Override
+            public void onClick(DialogInterface dialog,int which){
+                ti=(EditText)layout.findViewById(R.id.editTitle);
+                con=(EditText)layout.findViewById(R.id.editContent);
+                adapter.addItem(new CategoryItem(ti.getText().toString(),getDateString(),con.getText().toString()));
+            }
+
+        });
+        aDialog.setNegativeButton("취소",new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog,int which){
+            }
+        });
+        AlertDialog ad = aDialog.create();
+        ad.show();
+    }
 }
